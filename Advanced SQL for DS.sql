@@ -79,15 +79,23 @@ WITH orders_2 AS (
   SELECT  *,
           date(strftime('%Y-%m-%d',orderdate), 'weekday 1') AS week
     FROM [orders]
+),
+count_orders AS (
+
+SELECT w.week,
+       count(o.orderid) AS orders_to_week
+  FROM orders_2 w
+  JOIN orders_2 o
+    ON w.week >= o.week
+GROUP BY  w.week
+ORDER BY 1
 )
 
 SELECT w.week,
-       avg(o.orderid) AS orders_to_week
-  FROM orders_2 w
-  JOIN orders_2 o
+       avg(o.orders_to_week) AS orders_to_week
+  FROM count_orders w
+  JOIN count_orders o
     ON w.week >= o.week
     AND w.week <= date(o.week, '+1 month')
 GROUP BY  w.week
 ORDER BY 1
-
-
