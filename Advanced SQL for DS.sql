@@ -67,7 +67,7 @@ WITH orders_2 AS (
 )
 
 SELECT w.week,
-       count(o.orderid) AS orders_to_week
+       count(distinct o.orderid) AS orders_to_week
   FROM orders_2 w
   JOIN orders_2 o
     ON w.week >= o.week
@@ -83,7 +83,7 @@ WITH orders_2 AS (
 count_orders AS (
 
 SELECT w.week,
-       count(o.orderid) AS orders_to_week
+       count(distinct o.orderid) AS orders_to_week
   FROM orders_2 w
   JOIN orders_2 o
     ON w.week >= o.week
