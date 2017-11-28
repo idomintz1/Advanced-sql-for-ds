@@ -75,6 +75,7 @@ GROUP BY  w.week
 ORDER BY 1
 
 #For each week, what is the rolling average orders of the last month?
+
 WITH orders_2 AS (
   SELECT  *,
           date(strftime('%Y-%m-%d',orderdate), 'weekday 1') AS week
@@ -99,3 +100,4 @@ SELECT w.week,
     AND w.week <= date(o.week, '+1 month')
 GROUP BY  w.week
 ORDER BY 1
+;
