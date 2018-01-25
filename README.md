@@ -7,6 +7,6 @@ How many orders for each employee?
 What is the earliest and latest order date for each employee? What is the ratio of orders / weeks for each employee?  
 Who was the customer in each employee’s last order?  
   
-Go back in time and calculate . 
+**Go back in time and calculate.**     
 For each week , the number of orders we had until that point.   
 For each week, what is the rolling average orders of the last month?  
