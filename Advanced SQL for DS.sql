@@ -60,19 +60,24 @@ SELECT * FROM last_order;
 
 # For each week , the number of orders we had until that point
 
+
 WITH orders_2 AS (
   SELECT  *,
           date(strftime('%Y-%m-%d',orderdate), 'weekday 1') AS week
     FROM [orders]
-)
-
+),
+  weeks as (
+    select distinct week 
+    from orders_2
+ )
 SELECT w.week,
-       count(distinct o.orderid) AS orders_to_week
-  FROM orders_2 w
+       count( o.orderid) AS orders_to_week
+  FROM weeks w
   JOIN orders_2 o
     ON w.week >= o.week
 GROUP BY  w.week
 ORDER BY 1
+        
 
 #For each week, what is the rolling average orders of the last month?
 
@@ -81,15 +86,19 @@ WITH orders_2 AS (
           date(strftime('%Y-%m-%d',orderdate), 'weekday 1') AS week
     FROM [orders]
 ),
-count_orders AS (
+  weeks as (
+    select distinct week 
+    from orders_2
+ ),
+  count_orders AS (
+  SELECT w.week,
+         count( o.orderid) AS orders_to_week
+    FROM weeks w
+    JOIN orders_2 o
+      ON w.week >= o.week
+  GROUP BY  w.week
+  ORDER BY 1
 
-SELECT w.week,
-       count(distinct o.orderid) AS orders_to_week
-  FROM orders_2 w
-  JOIN orders_2 o
-    ON w.week >= o.week
-GROUP BY  w.week
-ORDER BY 1
 )
 
 SELECT w.week,
@@ -100,4 +109,5 @@ SELECT w.week,
     AND w.week <= date(o.week, '+1 month')
 GROUP BY  w.week
 ORDER BY 1
-;
+
+
